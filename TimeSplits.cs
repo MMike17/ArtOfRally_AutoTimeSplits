@@ -1,5 +1,4 @@
-﻿using FluffyUnderware.Curvy;
-using UnityEngine;
+﻿using UnityEngine;
 
 using static Car;
 using static ConditionTypes;

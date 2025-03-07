@@ -2,8 +2,6 @@ using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Add time splits reset option
-
 namespace AutoTimeSplits
 {
     [HarmonyPatch(typeof(OutOfBoundsManager), nameof(OutOfBoundsManager.Start))]
