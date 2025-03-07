@@ -7,7 +7,7 @@ using UnityModManagerNet;
 
 using static UnityModManagerNet.UnityModManager;
 
-namespace ModBase
+namespace AutoTimeSplits
 {
     public class Main
     {
