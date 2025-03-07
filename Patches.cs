@@ -2,7 +2,6 @@ using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Add feature disabling
 // Add time splits reset option
 
 namespace AutoTimeSplits
@@ -12,6 +11,9 @@ namespace AutoTimeSplits
     {
         static void Postfix(OutOfBoundsManager __instance)
         {
+            if (!Main.enabled)
+                return;
+
             Main.Try(() =>
             {
                 int totalCount = __instance.GetWaypointList().Count;
@@ -44,6 +46,9 @@ namespace AutoTimeSplits
 
         static void Postfix(OutOfBoundsManager __instance)
         {
+            if (!Main.enabled)
+                return;
+
             Main.Try(() =>
             {
                 if (timerManager == null)
@@ -64,6 +69,9 @@ namespace AutoTimeSplits
     {
         static void Postfix(StageTimerManager __instance)
         {
+            if (!Main.enabled)
+                return;
+
             Main.Try(() =>
             {
                 TimeSplitsManager.CheckFinishingTime(__instance.GetStageTimeMSInt());
