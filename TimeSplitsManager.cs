@@ -20,7 +20,7 @@ namespace AutoTimeSplits
 
         public static void Update(int timeMilis, int waypointIndex)
         {
-            if (waypointIndex >= splitIndexes[nextSplitIndex])
+            if (nextSplitIndex < splitIndexes.Length && waypointIndex >= splitIndexes[nextSplitIndex])
             {
                 string splitDisplay = timeSplits.GetSplit(timeMilis, nextSplitIndex);
 
@@ -49,7 +49,16 @@ namespace AutoTimeSplits
             PlayerPrefs.SetString(timeSplits.GetSaveKey(), JsonUtility.ToJson(timeSplits));
         }
 
-        public static void SetFinishingTime(int timeMilis) => SaveTimeSplits(timeSplits, timeMilis, timeSplits.splits.Length - 1);
+        public static void CheckFinishingTime(int timeMilis)
+        {
+            int targetSplit = timeSplits.splits[timeSplits.splits.Length - 1];
+
+            if (targetSplit < 0 || timeMilis < targetSplit)
+            {
+                timeSplits.splits[timeSplits.splits.Length - 1] = timeMilis;
+                SaveTimeSplits(timeSplits, timeMilis, timeSplits.splits.Length - 1);
+            }
+        }
 
         public static string GetBestTime()
         {
