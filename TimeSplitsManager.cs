@@ -67,7 +67,7 @@ namespace AutoTimeSplits
             if (split < 0)
                 return null;
             else
-                return timeSplits.FormatSplit(split);
+                return timeSplits.FormatSplit(split).Replace("+", "");
         }
     }
 }
