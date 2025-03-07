@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+
 using static Car;
 
 // TODO : Should I save in file ?
@@ -68,6 +70,23 @@ namespace AutoTimeSplits
                 return null;
             else
                 return timeSplits.FormatSplit(split).Replace("+", "");
+        }
+
+        public static void ResetTimeSplits()
+        {
+            foreach (Stage stage in GameModeManager.GetRallyDataCurrentGameMode().StageList)
+            {
+                foreach (CarClass carClass in Enum.GetValues(typeof(CarClass)))
+                {
+                    TimeSplits timeSplits = new TimeSplits(stage, carClass);
+                    string key = timeSplits.GetSaveKey();
+
+                    if (PlayerPrefs.HasKey(key))
+                        PlayerPrefs.DeleteKey(key);
+                }
+            }
+
+            Main.Log("Time splits have been reset");
         }
     }
 }
