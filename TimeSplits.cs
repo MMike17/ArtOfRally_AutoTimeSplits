@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using FluffyUnderware.Curvy;
+using UnityEngine;
 
 using static Car;
 using static ConditionTypes;
@@ -20,7 +21,7 @@ namespace AutoTimeSplits
             stageName = stage.Name;
             stageWeather = stage.Weather;
 
-            splits = new int[splitsCount - 1];
+            splits = new int[splitsCount];
 
             for (int i = 0; i < splits.Length; i++)
                 splits[i] = -1;
@@ -33,16 +34,19 @@ namespace AutoTimeSplits
             if (targetSplit < 0)
             {
                 TimeSplitsManager.SaveTimeSplits(this, timeMilisecs, index);
-                return "";
+                return null;
             }
 
-            int diff = Mathf.Abs(timeMilisecs - targetSplit);
+            return FormatSplit(Mathf.Abs(timeMilisecs - targetSplit));
+        }
 
-            int minutes = Mathf.RoundToInt(diff / 60000);
-            int seconds = Mathf.RoundToInt(diff / 1000 - minutes * 60);
-            int fractions = Mathf.RoundToInt((diff - (minutes * 60 + seconds) * 1000) / 10);
+        public string FormatSplit(int timeMilisecs)
+        {
+            int minutes = Mathf.RoundToInt(timeMilisecs / 60000);
+            int seconds = Mathf.RoundToInt(timeMilisecs / 1000 - minutes * 60);
+            int fractions = Mathf.RoundToInt((timeMilisecs - (minutes * 60 + seconds) * 1000) / 10);
 
-            return (diff > 0 ? "+" : "-") +
+            return (timeMilisecs > 0 ? "+" : "-") +
                 (minutes < 10 ? "0" : "") + minutes + ":" +
                 (seconds < 10 ? "0" : "") + seconds + ":" +
                 (fractions < 10 ? "0" : "") + fractions;
