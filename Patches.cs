@@ -1,35 +1,44 @@
 using HarmonyLib;
+using UnityEngine;
 
-// Load best time from memory
-//		what do I store time in ?
-// Duplicate timer for best time
+// Duplicate timer for best time (StageTimerManager / GetStageTimeMSInt)
 // Duplicate timer for splits panel
-// Decide which waypoint index corresponds to a split
-// Check if the player passed the index
-// Get time difference from best
+// Add feature disabling
 
 namespace AutoTimeSplits
 {
-    // Patch model
-    // [HarmonyPatch(typeof(), nameof())]
-    // [HarmonyPatch(typeof(), MethodType.)]
-    // static class type_method_Patch
-    // {
-    // 	static void Prefix()
-    // 	{
-    // 		//
-    // 	}
+    [HarmonyPatch(nameof(OutOfBoundsManager), nameof(OutOfBoundsManager.Start))]
+    static class SplitsInitializer
+    {
+        static void Postfix(OutOfBoundsManager _instance)
+        {
+            int totalCount = _instance.GetWaypointList().Count;
+            int step = Mathf.FloorToInt(totalCount / TimeSplits.splitsCount);
+            int[] splitsIndexes = new int[TimeSplits.splitsCount];
 
-    //	this will negate the method
-    //  	static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-    //  	{
-    //      	foreach (var instruction in instructions)
-    //          	yield return new CodeInstruction(OpCodes.Ret);
-    //  	}
+            for (int i = 0; i < splitsIndexes.Length; i++)
+                splitsIndexes[i] = step * (i + 1);
 
-    // 	static void Postfix()
-    // 	{
-    // 		//
-    // 	}
-    // }
+            SplitsUpdater.timerManager = StageTimerManager.FindObjectOfType<StageTimerManager>();
+
+            TimeSplitsManager.Init(
+                GameModeManager.GetRallyDataCurrentGameMode().GetCurrentStage(),
+                GameModeManager.GetSeasonDataCurrentGameMode().SelectedCar.carClass,
+                splitsIndexes
+            );
+
+            Main.Log("Initialized splits system");
+        }
+    }
+
+    [HarmonyPatch(nameof(OutOfBoundsManager), "FixedUpdate")]
+    static class SplitsUpdater
+    {
+        public static StageTimerManager timerManager;
+
+        static void Postfix(int __CurrentWaypointIndex)
+        {
+            TimeSplitsManager.Update(timerManager.GetStageTimeMSInt(), __CurrentWaypointIndex);
+        }
+    }
 }

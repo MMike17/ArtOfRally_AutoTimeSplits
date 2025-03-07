@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 using static Car;
 using static ConditionTypes;
@@ -8,7 +7,7 @@ namespace AutoTimeSplits
 {
     public class TimeSplits
     {
-        const int splitsCount = 4;
+        public const int splitsCount = 4;
 
         public CarClass carClass;
         public string stageName;
@@ -16,7 +15,7 @@ namespace AutoTimeSplits
         public int[] splits;
 
         // use GameModeManager.GetRallyDataCurrentGameMode().GetCurrentStage() to get current Stage
-        // use GameEntryPoint.EventManager.playerManager to get current car class
+        // use GameModeManager.GetSeasonDataCurrentGameMode().SelectedCar.carClass to get current car class
         public TimeSplits(Stage stage, CarClass carClass)
         {
             this.carClass = carClass;
@@ -33,10 +32,14 @@ namespace AutoTimeSplits
         {
             int targetSplit = splits[index];
 
-            if (targetSplit < 0 || timeMilisecs < targetSplit)
+            if (targetSplit < 0)
+            {
                 TimeSplitsManager.SaveTimeSplits(this, timeMilisecs, index);
+                return "";
+            }
 
             int diff = Mathf.Abs(timeMilisecs - targetSplit);
+
             int minutes = Mathf.RoundToInt(diff / 60000);
             int seconds = Mathf.RoundToInt(diff / 1000 - minutes * 60);
             int fractions = Mathf.RoundToInt((diff - (minutes * 60 + seconds) * 1000) / 10);
