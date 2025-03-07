@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// TODO : Add splits color
+
 namespace AutoTimeSplits
 {
     static class TimeSplitsUI
@@ -9,6 +11,7 @@ namespace AutoTimeSplits
         private static StageTimerManager runner;
         private static GameObject splitPanel;
         private static CanvasGroup splitPanelGroup;
+        private static Text splitText;
         private static float fadeSpeed;
         private static bool isRunning;
         private static bool cancelToken;
@@ -20,7 +23,9 @@ namespace AutoTimeSplits
             Text timerText = Main.GetField<Text, StageTimerManager>(timerManager, "TimeDisplay", System.Reflection.BindingFlags.Instance);
             GameObject model = timerText.transform.parent.gameObject;
 
-            GameObject bestPanel = GameObject.Instantiate(model, model.transform);
+            // best time panel
+            GameObject bestPanel = GameObject.Instantiate(model, model.transform.parent);
+            bestPanel.name = "Best time";
             RectTransform bestPanelRect = bestPanel.GetComponent<RectTransform>();
             bestPanelRect.anchoredPosition = new Vector2(0, -60); // TODO : Move Y pos to settings
 
@@ -28,12 +33,27 @@ namespace AutoTimeSplits
             bestPanel.GetComponentInChildren<Text>().text = bestTime;
             bestPanel.SetActive(bestTime != null);
 
-            splitPanel = GameObject.Instantiate(model, model.transform);
+            // time split panel
+            splitPanel = GameObject.Instantiate(model, model.transform.parent.parent);
+            splitPanel.name = "Time split";
+
+            // TODO : Add position settings
             RectTransform splitPanelRect = splitPanel.GetComponent<RectTransform>();
-            splitPanelRect.anchorMin = Vector2.one / 2;
-            splitPanelRect.anchorMax = Vector2.one / 2;
+            splitPanelRect.anchorMin = Vector2.one * 0.48f;
+            splitPanelRect.anchorMax = Vector2.one * 0.52f;
             splitPanelRect.anchoredPosition = Vector3.zero;
+
             splitPanelGroup = splitPanel.AddComponent<CanvasGroup>();
+            splitPanelGroup.alpha = 0;
+
+            splitText = splitPanel.GetComponentInChildren<Text>();
+            splitText.alignment = TextAnchor.MiddleCenter;
+            splitText.fontStyle = FontStyle.Bold;
+
+            RectTransform splitTextRect = splitText.GetComponent<RectTransform>();
+            splitTextRect.anchorMin = Vector2.one * 0.1f;
+            splitTextRect.anchorMax = Vector2.one * 0.9f;
+            splitTextRect.anchoredPosition = Vector3.zero;
 
             // TODO : Move these to settings
             float fadeDuration = 1;
@@ -57,6 +77,8 @@ namespace AutoTimeSplits
 
         private static IEnumerator ShowSplit(string timeSplit)
         {
+            splitText.text = timeSplit;
+
             // TODO : Move these to settings
             float idleDuration = 3;
 
