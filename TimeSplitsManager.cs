@@ -47,7 +47,7 @@ namespace AutoTimeSplits
             if (PlayerPrefs.HasKey(splits.GetSaveKey()))
                 splits = JsonUtility.FromJson<TimeSplits>(PlayerPrefs.GetString(splits.GetSaveKey()));
 
-            Main.Log("Retrieved splits for " + stage.Name + " (" + stage.Area + ") " + carClass + " [" + splits.splits + "]");
+            Main.Log("Retrieved splits for " + stage.Name + " (" + stage.Area + ") " + carClass);
             return splits;
         }
     }
