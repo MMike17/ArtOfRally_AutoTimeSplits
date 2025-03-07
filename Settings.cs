@@ -7,11 +7,9 @@ namespace AutoTimeSplits
 {
     public class Settings : ModSettings, IDrawable
     {
-        // [Draw(DrawType.)]
-        
+        //[Draw(DrawType.)]
+
         [Header("Debug")]
-        [Draw(DrawType.Toggle)]
-        public bool showMarkers;
         [Draw(DrawType.Toggle)]
         public bool disableInfoLogs = true;
 
@@ -19,8 +17,6 @@ namespace AutoTimeSplits
 
         public void OnChange()
         {
-            Main.SetMarkers(showMarkers);
-
             //
         }
     }

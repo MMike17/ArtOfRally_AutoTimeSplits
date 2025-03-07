@@ -16,9 +16,6 @@ namespace AutoTimeSplits
         public static ModEntry.ModLogger Logger;
         public static Settings settings;
 
-        static List<GameObject> markers;
-        static Material markerMat;
-
         // Called by the mod manager
         static bool Load(ModEntry modEntry)
         {
@@ -34,7 +31,6 @@ namespace AutoTimeSplits
             modEntry.OnGUI = (entry) => settings.Draw(entry);
             modEntry.OnSaveGUI = (entry) => settings.Save(entry);
 
-            markers = new List<GameObject>();
             return true;
         }
 
@@ -104,46 +100,6 @@ namespace AutoTimeSplits
             }
 
             info.Invoke(source, args);
-        }
-
-        public static void SetMarkers(bool state)
-        {
-            CleanMarkerList();
-            markers.ForEach(item => item.SetActive(state));
-        }
-
-        public static void AddMarker(Transform parent, Vector3 position, float size)
-        {
-            if (markerMat == null)
-            {
-                markerMat = new Material(Shader.Find("Standard"));
-                markerMat.color = Color.red;
-                markerMat.SetColor("_EmissionColor", Color.red);
-            }
-
-            GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            marker.GetComponent<Renderer>().material = markerMat;
-
-            marker.transform.SetParent(parent);
-            marker.transform.position = position;
-            marker.transform.localScale = Vector3.one * size;
-
-            marker.SetActive(settings.showMarkers);
-            markers.Add(marker);
-        }
-
-        static void CleanMarkerList()
-        {
-            List<int> toRemove = new List<int>();
-
-            for (int i = 0; i < markers.Count; i++)
-            {
-                if (markers[i] == null)
-                    toRemove.Add(i);
-            }
-
-            toRemove.Reverse();
-            toRemove.ForEach(index => markers.RemoveAt(index));
         }
     }
 }
