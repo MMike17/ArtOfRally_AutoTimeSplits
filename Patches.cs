@@ -47,7 +47,12 @@ namespace AutoTimeSplits
             Main.Try(() =>
             {
                 if (timerManager == null)
+                {
                     timerManager = StageTimerManager.FindObjectOfType<StageTimerManager>();
+
+                    if (timerManager != null)
+                        TimeSplitsUI.Init(timerManager);
+                }
                 else
                     TimeSplitsManager.Update(timerManager.GetStageTimeMSInt(), __instance.GetCurrentWaypointIndex());
             });
@@ -61,7 +66,7 @@ namespace AutoTimeSplits
         {
             Main.Try(() =>
             {
-                TimeSplitsManager.SetFinishingTime(__instance.GetStageTimeMSInt());
+                TimeSplitsManager.CheckFinishingTime(__instance.GetStageTimeMSInt());
                 Main.Log("Finish time : " + Main.GetField<Text, StageTimerManager>(__instance, "TimeDisplay", System.Reflection.BindingFlags.Instance).text);
             });
         }
