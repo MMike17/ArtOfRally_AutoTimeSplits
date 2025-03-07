@@ -48,7 +48,7 @@ namespace AutoTimeSplits
 
             return (timeMilisecs > 0 ? "+" : "-") +
                 (minutes < 10 ? "0" : "") + minutes + ":" +
-                (seconds < 10 ? "0" : "") + seconds + ":" +
+                (seconds < 10 ? "0" : "") + seconds + "." +
                 (fractions < 10 ? "0" : "") + fractions;
         }
 
