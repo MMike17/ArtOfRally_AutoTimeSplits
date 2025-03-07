@@ -4,6 +4,7 @@ using UnityEngine;
 // Duplicate timer for best time (StageTimerManager / GetStageTimeMSInt)
 // Duplicate timer for splits panel
 // Add feature disabling
+// Add time splits reset option
 
 namespace AutoTimeSplits
 {
@@ -16,7 +17,7 @@ namespace AutoTimeSplits
             {
                 int totalCount = __instance.GetWaypointList().Count;
                 int step = Mathf.FloorToInt(totalCount / TimeSplits.splitsCount);
-                int[] splitsIndexes = new int[TimeSplits.splitsCount];
+                int[] splitsIndexes = new int[TimeSplits.splitsCount - 1];
 
                 for (int i = 0; i < splitsIndexes.Length; i++)
                     splitsIndexes[i] = step * (i + 1);

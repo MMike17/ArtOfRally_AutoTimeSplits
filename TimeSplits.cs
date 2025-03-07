@@ -14,15 +14,13 @@ namespace AutoTimeSplits
         public Weather stageWeather;
         public int[] splits;
 
-        // use GameModeManager.GetRallyDataCurrentGameMode().GetCurrentStage() to get current Stage
-        // use GameModeManager.GetSeasonDataCurrentGameMode().SelectedCar.carClass to get current car class
         public TimeSplits(Stage stage, CarClass carClass)
         {
             this.carClass = carClass;
             stageName = stage.Name;
             stageWeather = stage.Weather;
 
-            splits = new int[splitsCount];
+            splits = new int[splitsCount - 1];
 
             for (int i = 0; i < splits.Length; i++)
                 splits[i] = -1;
