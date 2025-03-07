@@ -1,14 +1,13 @@
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.UI;
 
-// Duplicate timer for best time (StageTimerManager / GetStageTimeMSInt)
-// Duplicate timer for splits panel
 // Add feature disabling
 // Add time splits reset option
 
 namespace AutoTimeSplits
 {
-    [HarmonyPatch(nameof(OutOfBoundsManager), nameof(OutOfBoundsManager.Start))]
+    [HarmonyPatch(typeof(OutOfBoundsManager), nameof(OutOfBoundsManager.Start))]
     static class SplitsInitializer
     {
         static void Postfix(OutOfBoundsManager __instance)
@@ -22,21 +21,23 @@ namespace AutoTimeSplits
                 for (int i = 0; i < splitsIndexes.Length; i++)
                     splitsIndexes[i] = step * (i + 1);
 
-                for (int i = 0; i < splitsIndexes.Length; i++)
-                    Main.Log("Split index [" + i + "] : " + splitsIndexes[i]);
-
                 TimeSplitsManager.Init(
                     GameModeManager.GetRallyDataCurrentGameMode().GetCurrentStage(),
                     GameModeManager.GetSeasonDataCurrentGameMode().SelectedCar.carClass,
                     splitsIndexes
                 );
 
-                Main.Log("Initialized splits system");
+                Main.Log("Initialized splits system (splits : " +
+                    splitsIndexes[0] + ", " +
+                    splitsIndexes[1] + ", " +
+                    splitsIndexes[2] + " / " +
+                    totalCount + ")"
+                );
             });
         }
     }
 
-    [HarmonyPatch(nameof(OutOfBoundsManager), "FixedUpdate")]
+    [HarmonyPatch(typeof(OutOfBoundsManager), "FixedUpdate")]
     static class SplitsUpdater
     {
         public static StageTimerManager timerManager;
@@ -49,6 +50,19 @@ namespace AutoTimeSplits
                     timerManager = StageTimerManager.FindObjectOfType<StageTimerManager>();
                 else
                     TimeSplitsManager.Update(timerManager.GetStageTimeMSInt(), __instance.GetCurrentWaypointIndex());
+            });
+        }
+    }
+
+    [HarmonyPatch(typeof(StageTimerManager), nameof(StageTimerManager.OnStageOver))]
+    static class SplitsCloser
+    {
+        static void Postfix(StageTimerManager __instance)
+        {
+            Main.Try(() =>
+            {
+                TimeSplitsManager.SetFinishingTime(__instance.GetStageTimeMSInt());
+                Main.Log("Finish time : " + Main.GetField<Text, StageTimerManager>(__instance, "TimeDisplay", System.Reflection.BindingFlags.Instance).text);
             });
         }
     }
