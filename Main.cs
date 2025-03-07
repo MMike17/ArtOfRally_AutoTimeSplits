@@ -15,7 +15,7 @@ namespace AutoTimeSplits
 
         public static ModEntry.ModLogger Logger;
         public static Settings settings;
-        
+
         static List<GameObject> markers;
         static Material markerMat;
 
@@ -44,7 +44,11 @@ namespace AutoTimeSplits
             return true;
         }
 
-        public static void Log(string message) => Logger.Log(message);
+        public static void Log(string message)
+        {
+            if (!Main.settings.disableInfoLogs)
+                Logger.Log(message);
+        }
 
         public static void Error(string message) => Logger.Error(message);
 
