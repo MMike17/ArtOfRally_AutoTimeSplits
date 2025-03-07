@@ -25,19 +25,11 @@ namespace AutoTimeSplits
                 string splitDisplay = timeSplits.GetSplit(timeMilis, nextSplitIndex);
 
                 if (splitDisplay != null)
-                {
-                    // TODO : Show splits UI here
-                }
+                    TimeSplitsUI.ShowSplits(splitDisplay);
 
                 Main.Log(splitIndexes[nextSplitIndex] + " : " + splitDisplay);
                 nextSplitIndex++;
             }
-        }
-
-        public static void SaveTimeSplits(TimeSplits timeSplits, int timeMilis, int index)
-        {
-            timeSplits.splits[index] = timeMilis;
-            PlayerPrefs.SetString(timeSplits.GetSaveKey(), JsonUtility.ToJson(timeSplits));
         }
 
         private static TimeSplits GetTimeSplits(Stage stage, CarClass carClass)
@@ -49,6 +41,24 @@ namespace AutoTimeSplits
 
             Main.Log("Retrieved splits for " + stage.Name + " (" + stage.Area + ") " + carClass);
             return splits;
+        }
+
+        public static void SaveTimeSplits(TimeSplits timeSplits, int timeMilis, int index)
+        {
+            timeSplits.splits[index] = timeMilis;
+            PlayerPrefs.SetString(timeSplits.GetSaveKey(), JsonUtility.ToJson(timeSplits));
+        }
+
+        public static void SetFinishingTime(int timeMilis) => SaveTimeSplits(timeSplits, timeMilis, timeSplits.splits.Length - 1);
+
+        public static string GetBestTime()
+        {
+            int split = timeSplits.splits[timeSplits.splits.Length - 1];
+
+            if (split < 0)
+                return null;
+            else
+                return timeSplits.FormatSplit(split);
         }
     }
 }
