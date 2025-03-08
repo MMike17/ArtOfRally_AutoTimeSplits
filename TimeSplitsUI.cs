@@ -11,6 +11,7 @@ namespace AutoTimeSplits
         private static CanvasGroup splitPanelGroup;
         private static Text splitText;
         private static RectTransform bestPanelRect;
+        private static RectTransform splitPanelRect;
         private static float fadeSpeed;
         private static bool isRunning;
         private static bool cancelToken;
@@ -36,11 +37,11 @@ namespace AutoTimeSplits
             splitPanel = GameObject.Instantiate(model, model.transform.parent.parent);
             splitPanel.name = "Time split";
 
-            // TODO : Add position settings
-            RectTransform splitPanelRect = splitPanel.GetComponent<RectTransform>();
+            splitPanelRect = splitPanel.GetComponent<RectTransform>();
             splitPanelRect.anchorMin = Vector2.one * 0.48f;
             splitPanelRect.anchorMax = Vector2.one * 0.52f;
-            splitPanelRect.anchoredPosition = new Vector2(0, 0); // TODO : Move Y pos to settings
+
+            SetSplitsHeight(Main.settings.timeSplitsPanelHeight);
             splitPanelRect.localScale = Vector3.one * 1; // TODO : Add scaling settings
 
             splitPanelGroup = splitPanel.AddComponent<CanvasGroup>();
@@ -66,6 +67,12 @@ namespace AutoTimeSplits
         {
             if (bestPanelRect != null)
                 bestPanelRect.anchoredPosition = new Vector2(0, height);
+        }
+
+        public static void SetSplitsHeight(int height)
+        {
+            if (splitPanelRect != null)
+                splitPanelRect.anchoredPosition = new Vector2(0, height);
         }
 
         public static void ShowSplits(string timeSplit) => runner.StartCoroutine(ResetAnim(timeSplit));
