@@ -20,24 +20,38 @@ A mod for Art of Rally which adds automaticly generated time splits.
 ![](https://img.shields.io/badge/XBox-Untested-yellow)
 ![](https://img.shields.io/badge/Switch-Untested-yellow)
 
-## Requirements
+## Mechanics
 
-This mod requires the "..." that you can find [here](https://github.com/MMike17/AutoTimeSplits).\
-Latest release [![](https://img.shields.io/github/v/release/MMike17/?label=Real%20car%20names)](https://github.com/MMike17/AutoTimeSplits/releases/latest)
+This mod records and displays time splits.\
+They are recorded per car class / per stage / per weather and are not shared between car classes, or weathers.
+
+Upon first run completion, no extra panels are displayed.\
+When a run has already been recorded, the best time panel will be displayed under the regular timer panel.
+
+Each level is split into 4 sections (3 time splits + final time).\
+Time splits are storred into the PlayerPrefs, which is hardly accessible for manual modification.
 
 ## Usage
 
 Press Ctrl + F10 to open the mod manager menu.\
-Adjust settings to select [...] you want.\
-By default, the mod [...].
+Adjust settings to select how time splits display you want.
 
-- **<settingName>** : will [...].
+By default, the mod adds automatic time splits detection and display.
 
-Disabling the mod in the manager will [...] by default.
+- **goodSplitColor** : will change the color of the text when the split is good (less than previous).
+- **badSplitColor** : will change the color of the text when the split is bad (more than previous).
 
-## Disclaimer
+- **bestTimePanelHeight** : will change the height of the best time panel.
+- **timeSplitsPanelHeight** : will change the height of the time splits panel.
+- **timeSplitsPanelSize** : will change the size of the time splits panel.
 
-[...]
+- **timeSplitsFadeDuration** : will determine how long the time splits panel will take to fade in and out.
+- **timeSplitsIdleDuration** : will determine how long the time splits panel will stay after fading in.
+
+- **disableInfoLogs** : will disable mod info logs in the console.
+- **Reset time splits** : will delete all time splits.
+
+Disabling the mod in the manager will hide all time splits displays by default.
 
 ## Installation
 
@@ -48,8 +62,11 @@ and drop it into the mod manager's mods page.
 
 ## Showcase
 
-![](Screenshots/.png)
+![](Screenshots/Idle.png)
+![](Screenshots/TimeSplit+.png)
+![](Screenshots/TimeSplit-.png)
+![](Screenshots/Settings.png)
 
 ## Acknowledgments
 
-[...]
+Heavily inspired by the [Art of Rally Splits](https://github.com/Theaninova/ArtOfRallySplits) mod made by Theaninova.
