@@ -32,6 +32,8 @@ namespace AutoTimeSplits
         public int bestTimePanelHeight = -60;
         [Draw(DrawType.Slider, Min = 100, Max = 500)]
         public int timeSplitsPanelHeight = 250;
+        [Draw(DrawType.Slider, Min = 1, Max = 3)]
+        public float timeSplitsPanelSize = 1.5f;
 
         [Header("Debug")]
         [Draw(DrawType.Toggle)]
@@ -51,6 +53,7 @@ namespace AutoTimeSplits
 
             TimeSplitsUI.SetBestHeight(bestTimePanelHeight);
             TimeSplitsUI.SetSplitsHeight(timeSplitsPanelHeight);
+            TimeSplitsUI.SetSplitsSize(timeSplitsPanelSize);
         }
 
         public static Color GetColor(ColorTag tag)

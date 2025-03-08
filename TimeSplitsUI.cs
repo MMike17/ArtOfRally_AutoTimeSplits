@@ -42,7 +42,7 @@ namespace AutoTimeSplits
             splitPanelRect.anchorMax = Vector2.one * 0.52f;
 
             SetSplitsHeight(Main.settings.timeSplitsPanelHeight);
-            splitPanelRect.localScale = Vector3.one * 1; // TODO : Add scaling settings
+            SetSplitsSize(Main.settings.timeSplitsPanelSize);
 
             splitPanelGroup = splitPanel.AddComponent<CanvasGroup>();
             splitPanelGroup.alpha = 0;
@@ -73,6 +73,12 @@ namespace AutoTimeSplits
         {
             if (splitPanelRect != null)
                 splitPanelRect.anchoredPosition = new Vector2(0, height);
+        }
+
+        public static void SetSplitsSize(float size)
+        {
+            if (splitPanelRect != null)
+                splitPanelRect.localScale = Vector3.one * size;
         }
 
         public static void ShowSplits(string timeSplit) => runner.StartCoroutine(ResetAnim(timeSplit));
