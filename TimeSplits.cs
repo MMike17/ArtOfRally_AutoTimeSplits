@@ -36,16 +36,19 @@ namespace AutoTimeSplits
                 return null;
             }
 
-            return FormatSplit(Mathf.Abs(timeMilisecs - targetSplit));
+            return FormatSplit(timeMilisecs - targetSplit);
         }
 
         public string FormatSplit(int timeMilisecs)
         {
+            bool isNegative = timeMilisecs < 0;
+            timeMilisecs = Mathf.Abs(timeMilisecs);
+
             int minutes = Mathf.RoundToInt(timeMilisecs / 60000);
             int seconds = Mathf.RoundToInt(timeMilisecs / 1000 - minutes * 60);
             int fractions = Mathf.RoundToInt((timeMilisecs - (minutes * 60 + seconds) * 1000) / 10);
 
-            return (timeMilisecs > 0 ? "+" : "-") +
+            return (isNegative ? "-" : "+") +
                 (minutes < 10 ? "0" : "") + minutes + ":" +
                 (seconds < 10 ? "0" : "") + seconds + "." +
                 (fractions < 10 ? "0" : "") + fractions;
