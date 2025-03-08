@@ -58,6 +58,8 @@ namespace AutoTimeSplits
             // TODO : Move these to settings
             float fadeDuration = 1;
             fadeSpeed = 1 / fadeDuration;
+
+            Main.Log("Spawned time splits UI");
         }
 
         public static void ShowSplits(string timeSplit) => runner.StartCoroutine(ResetAnim(timeSplit));

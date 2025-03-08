@@ -49,6 +49,7 @@ namespace AutoTimeSplits
         {
             timeSplits.splits[index] = timeMilis;
             PlayerPrefs.SetString(timeSplits.GetSaveKey(), JsonUtility.ToJson(timeSplits));
+            Main.Log("Saved time splits for key " + timeSplits.GetSaveKey());
         }
 
         public static void CheckFinishingTime(int timeMilis)
