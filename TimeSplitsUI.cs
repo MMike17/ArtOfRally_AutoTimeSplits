@@ -115,7 +115,7 @@ namespace AutoTimeSplits
                     yield break;
                 }
 
-                splitPanelGroup.alpha = Mathf.MoveTowards(splitPanelGroup.alpha, target, fadeSpeed);
+                splitPanelGroup.alpha = Mathf.MoveTowards(splitPanelGroup.alpha, target, fadeSpeed * Time.deltaTime);
                 yield return null;
             }
 
