@@ -27,6 +27,9 @@ namespace AutoTimeSplits
         public ColorTag goodSplitColor = ColorTag.Green;
         [Draw(DrawType.Auto)]
         public ColorTag badSplitColor = ColorTag.Red;
+        [Space]
+        [Draw(DrawType.Slider, Min = -100, Max = -50)]
+        public int bestTimePanelHeight = -60;
 
         [Header("Debug")]
         [Draw(DrawType.Toggle)]
@@ -43,6 +46,8 @@ namespace AutoTimeSplits
                 TimeSplitsManager.ResetTimeSplits();
                 resetTimeSplits = false;
             }
+
+            TimeSplitsUI.SetBestHeight(bestTimePanelHeight);
         }
 
         public static Color GetColor(ColorTag tag)

@@ -10,6 +10,7 @@ namespace AutoTimeSplits
         private static GameObject splitPanel;
         private static CanvasGroup splitPanelGroup;
         private static Text splitText;
+        private static RectTransform bestPanelRect;
         private static float fadeSpeed;
         private static bool isRunning;
         private static bool cancelToken;
@@ -24,8 +25,8 @@ namespace AutoTimeSplits
             // best time panel
             GameObject bestPanel = GameObject.Instantiate(model, model.transform.parent);
             bestPanel.name = "Best time";
-            RectTransform bestPanelRect = bestPanel.GetComponent<RectTransform>();
-            bestPanelRect.anchoredPosition = new Vector2(0, -60); // TODO : Move Y pos to settings
+            bestPanelRect = bestPanel.GetComponent<RectTransform>();
+            SetBestHeight(Main.settings.bestTimePanelHeight);
 
             string bestTime = TimeSplitsManager.GetBestTime();
             bestPanel.GetComponentInChildren<Text>().text = bestTime;
@@ -39,7 +40,8 @@ namespace AutoTimeSplits
             RectTransform splitPanelRect = splitPanel.GetComponent<RectTransform>();
             splitPanelRect.anchorMin = Vector2.one * 0.48f;
             splitPanelRect.anchorMax = Vector2.one * 0.52f;
-            splitPanelRect.anchoredPosition = Vector3.zero;
+            splitPanelRect.anchoredPosition = new Vector2(0, 0); // TODO : Move Y pos to settings
+            splitPanelRect.localScale = Vector3.one * 1; // TODO : Add scaling settings
 
             splitPanelGroup = splitPanel.AddComponent<CanvasGroup>();
             splitPanelGroup.alpha = 0;
@@ -51,13 +53,19 @@ namespace AutoTimeSplits
             RectTransform splitTextRect = splitText.GetComponent<RectTransform>();
             splitTextRect.anchorMin = Vector2.one * 0.1f;
             splitTextRect.anchorMax = Vector2.one * 0.9f;
-            splitTextRect.anchoredPosition = Vector3.zero;
+            splitTextRect.anchoredPosition = Vector2.zero;
 
             // TODO : Move these to settings
             float fadeDuration = 1;
             fadeSpeed = 1 / fadeDuration;
 
             Main.Log("Spawned time splits UI");
+        }
+
+        public static void SetBestHeight(int height)
+        {
+            if (bestPanelRect != null)
+                bestPanelRect.anchoredPosition = new Vector2(0, height);
         }
 
         public static void ShowSplits(string timeSplit) => runner.StartCoroutine(ResetAnim(timeSplit));
