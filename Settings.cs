@@ -7,7 +7,26 @@ namespace AutoTimeSplits
 {
     public class Settings : ModSettings, IDrawable
     {
-        //[Draw(DrawType.)]
+        readonly static Color Brown = new Color(0.75f, 0.5f, 0.25f);
+
+        public enum ColorTag
+        {
+            White,
+            Grey,
+            Black,
+            Red,
+            Green,
+            Blue,
+            Yellow,
+            Magenta,
+            Cyan,
+            Brown
+        }
+
+        [Draw(DrawType.Auto)]
+        public ColorTag goodSplitColor = ColorTag.Green;
+        [Draw(DrawType.Auto)]
+        public ColorTag badSplitColor = ColorTag.Red;
 
         [Header("Debug")]
         [Draw(DrawType.Toggle)]
@@ -23,6 +42,35 @@ namespace AutoTimeSplits
             {
                 TimeSplitsManager.ResetTimeSplits();
                 resetTimeSplits = false;
+            }
+        }
+
+        public static Color GetColor(ColorTag tag)
+        {
+            switch (tag)
+            {
+                case ColorTag.White:
+                    return Color.white;
+                case ColorTag.Grey:
+                    return Color.grey;
+                case ColorTag.Black:
+                    return Color.black;
+                case ColorTag.Red:
+                    return Color.red;
+                case ColorTag.Green:
+                    return Color.green;
+                case ColorTag.Blue:
+                    return Color.blue;
+                case ColorTag.Yellow:
+                    return Color.yellow;
+                case ColorTag.Magenta:
+                    return Color.magenta;
+                case ColorTag.Cyan:
+                    return Color.cyan;
+                case ColorTag.Brown:
+                    return Brown;
+                default:
+                    return Color.clear;
             }
         }
     }

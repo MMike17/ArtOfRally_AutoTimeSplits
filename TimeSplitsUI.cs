@@ -2,8 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// TODO : Add splits color
-
 namespace AutoTimeSplits
 {
     static class TimeSplitsUI
@@ -80,6 +78,7 @@ namespace AutoTimeSplits
         private static IEnumerator ShowSplit(string timeSplit)
         {
             splitText.text = timeSplit;
+            splitText.color = Settings.GetColor(timeSplit.Contains("-") ? Main.settings.goodSplitColor : Main.settings.badSplitColor);
 
             // TODO : Move these to settings
             float idleDuration = 3;
