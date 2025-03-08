@@ -61,6 +61,8 @@ namespace AutoTimeSplits
                 timeSplits.splits[timeSplits.splits.Length - 1] = timeMilis;
                 SaveTimeSplits(timeSplits, timeMilis, timeSplits.splits.Length - 1);
             }
+
+            nextSplitIndex = 0;
         }
 
         public static string GetBestTime()
