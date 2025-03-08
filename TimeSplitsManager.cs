@@ -52,6 +52,8 @@ namespace AutoTimeSplits
             Main.Log("Saved time splits for key " + timeSplits.GetSaveKey());
         }
 
+        public static void ResetTrackIndex() => nextSplitIndex = 0;
+
         public static void CheckFinishingTime(int timeMilis)
         {
             int targetSplit = timeSplits.splits[timeSplits.splits.Length - 1];
@@ -61,8 +63,6 @@ namespace AutoTimeSplits
                 timeSplits.splits[timeSplits.splits.Length - 1] = timeMilis;
                 SaveTimeSplits(timeSplits, timeMilis, timeSplits.splits.Length - 1);
             }
-
-            nextSplitIndex = 0;
         }
 
         public static string GetBestTime()

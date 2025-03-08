@@ -62,6 +62,18 @@ namespace AutoTimeSplits
         }
     }
 
+    [HarmonyPatch(typeof(EventManager), nameof(EventManager.StartEvent))]
+    public class SplitsReseter
+    {
+        static void Postfix()
+        {
+            if (!Main.enabled)
+                return;
+
+            TimeSplitsManager.ResetTrackIndex();
+        }
+    }
+
     [HarmonyPatch(typeof(StageTimerManager), nameof(StageTimerManager.OnStageOver))]
     static class SplitsCloser
     {
