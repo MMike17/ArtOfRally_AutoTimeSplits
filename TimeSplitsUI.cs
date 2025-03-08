@@ -56,10 +56,7 @@ namespace AutoTimeSplits
             splitTextRect.anchorMax = Vector2.one * 0.9f;
             splitTextRect.anchoredPosition = Vector2.zero;
 
-            // TODO : Move these to settings
-            float fadeDuration = 1;
-            fadeSpeed = 1 / fadeDuration;
-
+            fadeSpeed = 1 / Main.settings.timeSplitsFadeDuration;
             Main.Log("Spawned time splits UI");
         }
 
@@ -101,9 +98,6 @@ namespace AutoTimeSplits
             splitText.text = timeSplit;
             splitText.color = Settings.GetColor(timeSplit.Contains("-") ? Main.settings.goodSplitColor : Main.settings.badSplitColor);
 
-            // TODO : Move these to settings
-            float idleDuration = 3;
-
             yield return FadePanel(true);
 
             if (cancelToken)
@@ -112,7 +106,7 @@ namespace AutoTimeSplits
                 yield break;
             }
 
-            yield return new WaitForSeconds(idleDuration);
+            yield return new WaitForSeconds(Main.settings.timeSplitsIdleDuration);
 
             if (cancelToken)
             {

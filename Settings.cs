@@ -34,6 +34,11 @@ namespace AutoTimeSplits
         public int timeSplitsPanelHeight = 250;
         [Draw(DrawType.Slider, Min = 1, Max = 3)]
         public float timeSplitsPanelSize = 1.5f;
+        [Space]
+        [Draw(DrawType.Slider, Min = 0.5f, Max = 3)]
+        public float timeSplitsFadeDuration = 1;
+        [Draw(DrawType.Slider, Min = 1, Max = 5)]
+        public float timeSplitsIdleDuration = 1;
 
         [Header("Debug")]
         [Draw(DrawType.Toggle)]
