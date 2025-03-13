@@ -1,6 +1,6 @@
 ﻿# Auto-time splits
 
-[![](https://img.shields.io/github/v/release/MMike17/AutoTimeSplits?label=Download)](https://github.com/MMike17/AutoTimeSplits/releases/latest)
+[![](https://img.shields.io/github/v/release/MMike17/AutoTimeSplits?label=Download)](https://github.com/MMike17/ArtOfRally_AutoTimeSplits/releases/latest)
 ![](https://img.shields.io/badge/Game%20Version-v1.5.5-blue)
 
 A mod for Art of Rally which adds automaticly generated time splits.
