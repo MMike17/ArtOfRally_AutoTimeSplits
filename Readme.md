@@ -57,7 +57,7 @@ Disabling the mod in the manager will hide all time splits displays by default.
 
 Follow the [installation guide](https://www.nexusmods.com/site/mods/21/) of
 the Unity Mod Manager.\
-Then simply download the [latest release](https://github.com/MMike17/AutoTimeSplits/releases/latest)
+Then simply download the [latest release](https://github.com/MMike17/ArtOfRally_AutoTimeSplits/releases/latest)
 and drop it into the mod manager's mods page.
 
 ## Showcase
