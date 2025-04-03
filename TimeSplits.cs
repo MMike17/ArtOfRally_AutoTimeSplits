@@ -49,11 +49,15 @@ namespace AutoTimeSplits
             int minutes = Mathf.RoundToInt(timeMilisecs / 60000);
             int seconds = Mathf.RoundToInt(timeMilisecs / 1000 - minutes * 60);
             int fractions = Mathf.RoundToInt((timeMilisecs - (minutes * 60 + seconds) * 1000) / 10);
+            string trailingZeroes = string.Empty;
+
+            while (trailingZeroes.Length < 3 - fractions.ToString().Length)
+                trailingZeroes += "0";
 
             return (isNegative ? "-" : "+") +
                 (minutes < 10 ? "0" : "") + minutes + ":" +
                 (seconds < 10 ? "0" : "") + seconds + "." +
-                (fractions < 10 ? "0" : "") + fractions;
+                trailingZeroes + fractions;
         }
 
         // used for most cases
