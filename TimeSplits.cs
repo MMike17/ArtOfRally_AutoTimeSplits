@@ -14,6 +14,8 @@ namespace AutoTimeSplits
         public Weather stageWeather;
         public int[] splits;
 
+        public bool needsDoubleCheck => stageWeather < Weather.Night && stageWeather > Weather.None;
+
         public TimeSplits(Stage stage, CarClass carClass)
         {
             this.carClass = carClass;
@@ -54,6 +56,10 @@ namespace AutoTimeSplits
                 (fractions < 10 ? "0" : "") + fractions;
         }
 
+        // used for most cases
         public string GetSaveKey() => carClass + "_" + stageName + "_" + stageWeather;
+
+        // used for fixing
+        public string GetCorrectedSaveKey() => carClass + "_" + stageName + "_" + (needsDoubleCheck ? Weather.None : stageWeather);
     }
 }

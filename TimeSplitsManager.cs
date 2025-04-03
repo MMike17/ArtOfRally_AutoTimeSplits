@@ -3,9 +3,6 @@ using UnityEngine;
 
 using static Car;
 
-// TODO : Should I save in file ?
-// TODO : Export file ?
-
 namespace AutoTimeSplits
 {
     static class TimeSplitsManager
@@ -14,16 +11,21 @@ namespace AutoTimeSplits
         private static int[] splitIndexes;
         private static TimeSplits timeSplits;
 
-        public static void Init(Stage stage, CarClass carClass, int[] splitIndexes)
+        public static void Init(int[] splitIndexes) => TimeSplitsManager.splitIndexes = splitIndexes;
+
+        public static void Prime(Stage stage, CarClass carClass)
         {
-            TimeSplitsManager.splitIndexes = splitIndexes;
             timeSplits = GetTimeSplits(stage, carClass);
+            nextSplitIndex = 0;
+
+            TimeSplitsUI.UpdateBest();
         }
 
         public static void Update(int timeMilis, int waypointIndex)
         {
             if (nextSplitIndex < splitIndexes.Length && waypointIndex >= splitIndexes[nextSplitIndex])
             {
+                Main.Log("index : " + nextSplitIndex + " / time : " + timeSplits.splits[nextSplitIndex] + " / current " + timeMilis);
                 string splitDisplay = timeSplits.GetSplit(timeMilis, nextSplitIndex);
 
                 if (splitDisplay != null)
@@ -37,32 +39,42 @@ namespace AutoTimeSplits
         private static TimeSplits GetTimeSplits(Stage stage, CarClass carClass)
         {
             TimeSplits splits = new TimeSplits(stage, carClass);
+            string key = splits.GetCorrectedSaveKey();
 
             if (PlayerPrefs.HasKey(splits.GetSaveKey()))
-                splits = JsonUtility.FromJson<TimeSplits>(PlayerPrefs.GetString(splits.GetSaveKey()));
+            {
+                key = splits.GetSaveKey();
+                splits = JsonUtility.FromJson<TimeSplits>(PlayerPrefs.GetString(key));
 
-            Main.Log("Retrieved splits for " + stage.Name + " (" + stage.Area + ") " + carClass);
+                if (splits.needsDoubleCheck)
+                {
+                    Main.Log("Detected time split fixing.");
+                    Main.Log("Previous key : " + splits.GetSaveKey() + " / New key : " + splits.GetCorrectedSaveKey());
+
+                    SaveTimeSplits(splits, splits.splits[0], 0);
+                    PlayerPrefs.DeleteKey(splits.GetSaveKey());
+                }
+            }
+            else if (splits.needsDoubleCheck && PlayerPrefs.HasKey(splits.GetCorrectedSaveKey()))
+                splits = JsonUtility.FromJson<TimeSplits>(PlayerPrefs.GetString(splits.GetCorrectedSaveKey()));
+
+            Main.Log("Retrieved splits for " + stage.Name + " (" + key + ")");
             return splits;
         }
 
         public static void SaveTimeSplits(TimeSplits timeSplits, int timeMilis, int index)
         {
             timeSplits.splits[index] = timeMilis;
-            PlayerPrefs.SetString(timeSplits.GetSaveKey(), JsonUtility.ToJson(timeSplits));
-            Main.Log("Saved time splits for key " + timeSplits.GetSaveKey());
+            PlayerPrefs.SetString(timeSplits.GetCorrectedSaveKey(), JsonUtility.ToJson(timeSplits));
+            Main.Log("Saved time splits for key : " + timeSplits.GetCorrectedSaveKey());
         }
-
-        public static void ResetTrackIndex() => nextSplitIndex = 0;
 
         public static void CheckFinishingTime(int timeMilis)
         {
             int targetSplit = timeSplits.splits[timeSplits.splits.Length - 1];
 
-            if (targetSplit < 0 || timeMilis < targetSplit)
-            {
-                timeSplits.splits[timeSplits.splits.Length - 1] = timeMilis;
+            if (targetSplit <= 0 || timeMilis < targetSplit)
                 SaveTimeSplits(timeSplits, timeMilis, timeSplits.splits.Length - 1);
-            }
         }
 
         public static string GetBestTime()
@@ -82,11 +94,15 @@ namespace AutoTimeSplits
                 foreach (CarClass carClass in Enum.GetValues(typeof(CarClass)))
                 {
                     TimeSplits timeSplits = new TimeSplits(stage, carClass);
-                    string key = timeSplits.GetSaveKey();
-
-                    if (PlayerPrefs.HasKey(key))
-                        PlayerPrefs.DeleteKey(key);
+                    DeleteKey(timeSplits.GetSaveKey());
+                    DeleteKey(timeSplits.GetCorrectedSaveKey());
                 }
+            }
+
+            void DeleteKey(string key)
+            {
+                if (PlayerPrefs.HasKey(key))
+                    PlayerPrefs.DeleteKey(key);
             }
 
             Main.Log("Time splits have been reset");
