@@ -82,7 +82,11 @@ namespace AutoTimeSplits
 
         public static void ShowSplits(string timeSplit) => runner.StartCoroutine(ResetAnim(timeSplit));
 
-        public static void UpdateBest() => bestText.text = TimeSplitsManager.GetBestTime();
+        public static void UpdateBest()
+        {
+            if (bestText != null)
+                bestText.text = TimeSplitsManager.GetBestTime();
+        }
 
         private static IEnumerator ResetAnim(string timeSplit)
         {

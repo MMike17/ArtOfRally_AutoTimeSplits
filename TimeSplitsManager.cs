@@ -25,8 +25,8 @@ namespace AutoTimeSplits
         {
             if (nextSplitIndex < splitIndexes.Length && waypointIndex >= splitIndexes[nextSplitIndex])
             {
-                timeSplits.splits[nextSplitIndex] = timeMilis;
                 string splitDisplay = timeSplits.GetSplit(timeMilis, nextSplitIndex);
+                timeSplits.splits[nextSplitIndex] = timeMilis;
 
                 if (splitDisplay != null)
                     TimeSplitsUI.ShowSplits(splitDisplay);
