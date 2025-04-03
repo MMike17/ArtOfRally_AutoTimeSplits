@@ -10,6 +10,7 @@ namespace AutoTimeSplits
         private static GameObject splitPanel;
         private static CanvasGroup splitPanelGroup;
         private static Text splitText;
+        private static Text bestText;
         private static RectTransform bestPanelRect;
         private static RectTransform splitPanelRect;
         private static float fadeSpeed;
@@ -30,7 +31,8 @@ namespace AutoTimeSplits
             SetBestHeight(Main.settings.bestTimePanelHeight);
 
             string bestTime = TimeSplitsManager.GetBestTime();
-            bestPanel.GetComponentInChildren<Text>().text = bestTime;
+            bestText = bestPanel.GetComponentInChildren<Text>();
+            bestText.text = bestTime;
             bestPanel.SetActive(bestTime != null);
 
             // time split panel
@@ -79,6 +81,8 @@ namespace AutoTimeSplits
         }
 
         public static void ShowSplits(string timeSplit) => runner.StartCoroutine(ResetAnim(timeSplit));
+
+        public static void UpdateBest() => bestText.text = TimeSplitsManager.GetBestTime();
 
         private static IEnumerator ResetAnim(string timeSplit)
         {
