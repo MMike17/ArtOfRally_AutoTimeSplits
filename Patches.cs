@@ -21,10 +21,10 @@ namespace AutoTimeSplits
                 for (int i = 0; i < splitsIndexes.Length; i++)
                     splitsIndexes[i] = step * (i + 1);
 
-                TimeSplitsManager.Init(
+                TimeSplitsManager.Init(splitsIndexes);
+                TimeSplitsManager.Prime(
                     GameModeManager.GetRallyDataCurrentGameMode().GetCurrentStage(),
-                    GameModeManager.GetSeasonDataCurrentGameMode().SelectedCar.carClass,
-                    splitsIndexes
+                    GameModeManager.GetSeasonDataCurrentGameMode().SelectedCar.carClass
                 );
 
                 Main.Log("Initialized splits system (splits : " +
@@ -70,7 +70,10 @@ namespace AutoTimeSplits
             if (!Main.enabled)
                 return;
 
-            TimeSplitsManager.ResetTrackIndex();
+            TimeSplitsManager.Prime(
+                GameModeManager.GetRallyDataCurrentGameMode().GetCurrentStage(),
+                GameModeManager.GetSeasonDataCurrentGameMode().SelectedCar.carClass
+            );
         }
     }
 
