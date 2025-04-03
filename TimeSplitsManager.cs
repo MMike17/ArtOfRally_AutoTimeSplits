@@ -25,13 +25,13 @@ namespace AutoTimeSplits
         {
             if (nextSplitIndex < splitIndexes.Length && waypointIndex >= splitIndexes[nextSplitIndex])
             {
-                Main.Log("index : " + nextSplitIndex + " / time : " + timeSplits.splits[nextSplitIndex] + " / current " + timeMilis);
+                timeSplits.splits[nextSplitIndex] = timeMilis;
                 string splitDisplay = timeSplits.GetSplit(timeMilis, nextSplitIndex);
 
                 if (splitDisplay != null)
                     TimeSplitsUI.ShowSplits(splitDisplay);
 
-                Main.Log(splitIndexes[nextSplitIndex] + " : " + splitDisplay);
+                Main.Log("Waypoint " + splitIndexes[nextSplitIndex] + " : " + splitDisplay);
                 nextSplitIndex++;
             }
         }
